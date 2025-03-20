@@ -1,0 +1,70 @@
+resources:
+  repositories:
+   - repository: template_pipeline_t3
+     type: git
+     name: Sustentacao/template_pipeline_t3
+     ref: 'refs/heads/main'
+trigger:
+  branches:
+   include:
+     - stage
+variables:
+  application_name: 'frontend'
+  project_directory: ''
+  PublishSymbols: false
+  containerRegistry: 'REGISTRY'
+  repository: 'frontend'
+  Dockerfile: 'Dockerfile'
+  branch_stg: 'stage'
+  branch_prod: 'main'
+  var_group_stg: 'vgroup-frontend-stg'
+  var_group_prod: 'vgroup-frontend-prod'
+  azureResourceGroup_stg: 'MEDHEALTHSYSTEMS'
+  azureResourceGroup_prod: 'MEDHEALTHSYSTEMS'
+  kubernetesCluster_stg: 'ZSYS-H-MEDHEALTHSYSTEMS'
+  kubernetesCluster_prod: 'ZSYS-H-MEDHEALTHSYSTEMS'
+  namespace: 'medhealth'
+  manifestpath: 'manifests'
+  manifestname: '*.yaml'
+  envpath: ''
+  envname: '.env'
+  azureSubscriptionConnection: 'AZURE'
+  vm_image: agent-devops-vmss
+  nodevs: '18.x'
+  secureFile: 'envfrontend'
+
+stages:
+- template: templates/stages_build_react.yml@template_pipeline_t3
+  parameters:
+    application_name: '${{ variables.application_name }}'
+    project_directory: '${{ variables.project_directory }}'
+    containerRegistry: '${{ variables.containerRegistry }}'
+    repository: '${{ variables.repository }}'
+    Dockerfile: '${{ variables.Dockerfile }}'
+    branch_stg: '${{ variables.branch_stg }}'
+    branch_prod: '${{ variables.branch_prod }}'
+    var_group_stg: '${{ variables.var_group_stg }}'
+    var_group_prod: '${{ variables.var_group_prod }}'
+    manifestpath: '${{ variables.manifestpath }}'
+    manifestname: '${{ variables.manifestname }}'
+    envpath: '${{ variables.envpath }}'
+    envname: '${{ variables.envname }}'
+    nodevs: '${{ variables.nodevs }}'
+    secureFile: '${{ variables.secureFile }}'
+    vm_image: '${{ variables.vm_image }}'
+- template: templates/stages_deploy.yml@template_pipeline_t3
+  parameters:
+    application_name: '${{ variables.application_name }}'
+    branch_stg: '${{ variables.branch_stg }}'
+    branch_prod: '${{ variables.branch_prod }}'
+    var_group_stg: '${{ variables.var_group_stg }}'
+    var_group_prod: '${{ variables.var_group_prod }}'
+    azureResourceGroup_stg: '${{ variables.azureResourceGroup_stg }}'
+    kubernetesCluster_stg: '${{ variables.kubernetesCluster_stg }}'
+    azureResourceGroup_prod: '${{ variables.azureResourceGroup_prod }}'
+    kubernetesCluster_prod: '${{ variables.kubernetesCluster_prod }}'
+    namespace: '${{ variables.namespace }}'
+    manifestpath: '${{ variables.manifestpath }}'
+    manifestname: '${{ variables.manifestname }}'
+    azureSubscriptionConnection: '${{ variables.azureSubscriptionConnection }}'
+    vm_image: '${{ variables.vm_image }}'

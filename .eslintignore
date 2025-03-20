@@ -1,0 +1,17 @@
+@types
+node_modules
+coverage
+dist
+vite.config.ts
+vitest.config.ts
+tailwild.config.ts
+dist/
+**/*.test.tsx
+**/*.test.ts
+**/*.mock.ts
+env.d.ts
+.env
+postcss.config.js
+vite-env.d.ts
+tailwind.config.ts
+manifests/*

@@ -1,0 +1,6 @@
+{
+    "recommendations": [
+        "philosowaffle.openapi-designer",
+        "dbaeumer.vscode-eslint"
+    ]
+}
